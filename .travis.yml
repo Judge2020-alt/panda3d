@@ -8,6 +8,9 @@ matrix:
       env: PYTHONV=python3 FLAGS=--installer
     - compiler: clang
       env: PYTHONV=python2.7 FLAGS=--override=STDFLOAT_DOUBLE=1
+    - os: osx
+      osx_image: 8.2
+      env: PYTHONV=python2.7 FLAGS=--"installer --universal"
 addons:
   apt:
     packages:
@@ -28,12 +31,15 @@ addons:
     - python-dev
     - python3-dev
     - zlib1g-dev
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl 'https://www.panda3d.org/download/panda3d-1.9.3/panda3d-1.9.3-tools-mac.tar.gz'
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gunzip -c panda3d-1.9.3-tools-mac.tar.gz | tar xopf -
 script: $PYTHONV makepanda/makepanda.py --everything --git-commit $TRAVIS_COMMIT $FLAGS --threads 4 && LD_LIBRARY_PATH=built/lib PYTHONPATH=built $PYTHONV makepanda/test_imports.py
-notifications:
-  irc:
-    channels:
-      - "chat.freenode.net#panda3d"
-    on_success: change
-    on_failure: always
-    use_notice: true
-    skip_join: true
+#notifications:
+#  irc:
+#    channels:
+#      - "chat.freenode.net#panda3d"
+#    on_success: change
+#    on_failure: always
+#    use_notice: true
+#    skip_join: true
