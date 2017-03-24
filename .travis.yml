@@ -32,8 +32,8 @@ addons:
     - python3-dev
     - zlib1g-dev
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl 'https://www.panda3d.org/download/panda3d-1.9.3/panda3d-1.9.3-tools-mac.tar.gz'
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gunzip -c panda3d-1.9.3-tools-mac.tar.gz | tar xopf -
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl 'https://www.panda3d.org/download/panda3d-1.9.3/panda3d-1.9.3-tools-mac.tar.gz' ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gunzip -c panda3d-1.9.3-tools-mac.tar.gz | tar xopf - ; fi
 script: $PYTHONV makepanda/makepanda.py --everything --git-commit $TRAVIS_COMMIT $FLAGS --threads 4 && LD_LIBRARY_PATH=built/lib PYTHONPATH=built $PYTHONV makepanda/test_imports.py
 #notifications:
 #  irc:
