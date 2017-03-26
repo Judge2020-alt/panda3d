@@ -9,7 +9,6 @@ matrix:
     - compiler: clang
       env: PYTHONV=python2.7 FLAGS=--override=STDFLOAT_DOUBLE=1
     - os: osx
-      osx_image: 8.2
       env: PYTHONV=python2.7 FLAGS=--"installer --universal"
 addons:
   apt:
