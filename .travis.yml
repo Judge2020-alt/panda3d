@@ -9,7 +9,7 @@ matrix:
     - compiler: clang
       env: PYTHONV=python2.7 FLAGS=--override=STDFLOAT_DOUBLE=1
     - os: osx
-      env: PYTHONV=python2.7 FLAGS=--universal
+      env: PYTHONV=python2.7 FLAGS=--universal LDFLAGS=-L/usr/local/opt/openssl/lib CPPFLAGS=-I/usr/local/opt/openssl/include
 addons:
   apt:
     packages:
@@ -30,12 +30,6 @@ addons:
     - python-dev
     - python3-dev
     - zlib1g-dev
-before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl -o panda3d-1.9.3-tools-mac.tar.gz 'https://www.panda3d.org/download/panda3d-1.9.3/panda3d-1.9.3-tools-mac.tar.gz' > /dev/null ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gunzip -f -o . -c panda3d-1.9.3-tools-mac.tar.gz | tar xopf - | ls -R . ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update > /dev/null ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install --force openssl && brew link --force openssl ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then echo 'export PATH="/usr/local/opt/openssl/bin:$PATH"' >> ~/.bash_profile ; fi
 script: $PYTHONV makepanda/makepanda.py --everything --git-commit $TRAVIS_COMMIT $FLAGS --threads 4 && LD_LIBRARY_PATH=built/lib PYTHONPATH=built $PYTHONV makepanda/test_imports.py
 #notifications:
 #  irc:
