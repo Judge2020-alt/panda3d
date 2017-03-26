@@ -32,6 +32,7 @@ addons:
     - zlib1g-dev
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install openssl ffmpeg ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gem install eventmachine -- --with-cppflags=-I/usr/local/opt/openssl/include ; fi
 script: $PYTHONV makepanda/makepanda.py --everything --git-commit $TRAVIS_COMMIT $FLAGS --threads 4 && LD_LIBRARY_PATH=built/lib PYTHONPATH=built $PYTHONV makepanda/test_imports.py
 #notifications:
 #  irc:
