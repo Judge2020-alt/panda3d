@@ -9,7 +9,7 @@ matrix:
     - compiler: clang
       env: PYTHONV=python2.7 FLAGS=--override=STDFLOAT_DOUBLE=1
     - os: osx
-      env: PYTHONV=python2.7 FLAGS="--installer --universal"
+      env: PYTHONV=python2.7 FLAGS=--"installer --universal"
 addons:
   apt:
     packages:
@@ -31,8 +31,8 @@ addons:
     - python3-dev
     - zlib1g-dev
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install openssl ffmpeg ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gem install eventmachine -- --with-cppflags=-I/usr/local/opt/openssl/include ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl -o panda3d-1.9.3-tools-mac.tar.gz 'https://www.panda3d.org/download/panda3d-1.9.3/panda3d-1.9.3-tools-mac.tar.gz' > /dev/null ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gunzip -c panda3d-1.9.3-tools-mac.tar.gz | tar xopf - | ls -R ; fi
 script: $PYTHONV makepanda/makepanda.py --everything --git-commit $TRAVIS_COMMIT $FLAGS --threads 4 && LD_LIBRARY_PATH=built/lib PYTHONPATH=built $PYTHONV makepanda/test_imports.py
 #notifications:
 #  irc:
